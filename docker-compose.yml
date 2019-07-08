@@ -5,8 +5,8 @@ services:
       restart: always
       build:
         context: .
-        dockerfile: docker/dockerfiles/cron-alpine-dockerfile
+        dockerfile: docker/dockerfiles/cron-ubuntu-dockerfile
         args:
-          cron_job_run_dependencies: php7 php7-curl php7-mysqli php7-json
+          cron_job_run_dependencies: 
       volumes:
         - "./:/data/www/"

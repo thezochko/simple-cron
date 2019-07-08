@@ -1,0 +1,15 @@
+FROM ubuntu:18.04
+
+ARG cron_job_run_dependencies
+
+# Needing bash to navigate inside of the container and executing commands
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+cron \
+nano \
+$cron_job_run_dependencies
+
+COPY docker/cronjobs.txt cronjobs.txt
+RUN cat cronjobs.txt | crontab -
+
+# Starting cron as the entrypoint of this image
+ENTRYPOINT ["/usr/sbin/cron", "-f"]

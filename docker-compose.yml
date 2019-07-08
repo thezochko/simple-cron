@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  cron:
+      restart: always
+      build:
+        context: .
+        dockerfile: docker/dockerfiles/cron-alpine-dockerfile
+        args:
+          cron_job_run_dependencies: php7 php7-curl php7-mysqli php7-json
+      volumes:
+        - "./:/data/www/"

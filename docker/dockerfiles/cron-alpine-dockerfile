@@ -1,0 +1,12 @@
+FROM alpine:3.10.0
+
+ARG cron_job_run_dependencies
+
+RUN apk update && apk add --no-cache \
+$cron_job_run_dependencies
+
+COPY docker/cronjobs.txt cronjobs.txt
+RUN cat cronjobs.txt | crontab -
+
+# Starting cron as the entrypoint of this image
+ENTRYPOINT ["/usr/sbin/crond", "-f"]

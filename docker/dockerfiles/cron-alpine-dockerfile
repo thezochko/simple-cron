@@ -1,12 +1,12 @@
 FROM alpine:3.10.0
 
-ARG cron_job_run_dependencies
-ARG cronjobs_text_file_path
+ARG CRON_JOB_DEPENDENCIES
+ARG CRONJOBS_TEXT_FILE_PATH
 
 RUN apk update && apk add --no-cache \
-$cron_job_run_dependencies
+${CRON_JOB_DEPENDENCIES}
 
-COPY $cronjobs_text_file_path cronjobs.txt
+COPY ${CRONJOBS_TEXT_FILE_PATH} cronjobs.txt
 RUN cat cronjobs.txt | crontab -
 
 # Starting cron as the entrypoint of this image

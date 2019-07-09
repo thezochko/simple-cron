@@ -3,10 +3,12 @@ version: '3'
 services:
   cron:
       restart: always
+      env_file: .env
       build:
         context: .
         dockerfile: docker/dockerfiles/cron-ubuntu-dockerfile
         args:
-          cron_job_run_dependencies: 
+          cron_job_run_dependencies: ${cron_job_run_dependencies}
+          cronjobs_text_file_path: ${cronjobs_text_file_path}
       volumes:
         - "./:/data/www/"

@@ -1,6 +1,6 @@
 FROM alpine:3.10.0
 
-ARG cron_job_run_dependencies
+#ENV cron_job_run_dependencies=cron_job_run_dependencies
 
 RUN apk update && apk add --no-cache \
 $cron_job_run_dependencies

@@ -7,10 +7,17 @@ ENV CRON_JOB_DEPENDENCIES=$CRON_JOB_DEPENDENCIES_ARG
 ENV CRONJOBS_TEXT_FILE_PATH=$CRONJOBS_TEXT_FILE_PATH_ARG
 
 RUN apk update && apk add --no-cache \
+bash \
 ${CRON_JOB_DEPENDENCIES}
 
 COPY ${CRONJOBS_TEXT_FILE_PATH} cronjobs.txt
 RUN cat cronjobs.txt | crontab -
 
+COPY docker-entrypoint.sh docker-entrypoint.sh
+
+RUN chmod 777 docker-entrypoint.sh
+
 # Starting cron as the entrypoint of this image
-ENTRYPOINT ["/usr/sbin/crond", "-f"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["/usr/sbin/crond", "-f"]

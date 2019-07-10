@@ -3,15 +3,20 @@
 [alpine3.10.0](https://github.com/thezochko/simple-cron/tree/master) - 5 MB
 [ubuntu18.04](https://github.com/thezochko/simple-cron/tree/master) - 49 MB
 
-This image is designed to make setting up a cron container alot easier.
+This image is designed to help setting up a cron container alot easier.
 You will have crontab available out of the box.
 And you will be able to implement cronjob/cronjobs in two different ways when using this image.
 
 ## So what you need to do
 
-NOTE that we will be using docker-compose.yml to setup the image for build
+### One of two things:
+
+##### NOTE:
+We will be using docker-compose.yml to setup the image for build
 
 Docker-compose.yml EXAMPLE file wich includes all options for setup, where you DONT need any packages installed to run the cronjobs:
+
+> (In this case only the cronjobs inside of the volume containing a text with the cronjobs will be used, if you leave the volume out, the environment variable will be used instead)
 
 ```
 version: '3'
@@ -25,7 +30,9 @@ services:
       - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
 ```
 
-Docker-compose.yml EXAMPLE file wich includes all options for setup, where you DO need any packages installed to run the cronjobs:
+Docker-compose.yml EXAMPLE file wich includes all options for setup, where you DO need packages installed to run the cronjobs:
+
+> (In this case only the cronjobs inside of the volume containing a text with the cronjobs will be used, if you leave the volume out, the environment variable will be used instead)
 
 ```
 version: '3'
@@ -35,14 +42,12 @@ services:
     build:
         context: .
         dockerfile: Dockerfile
-    image: thezochko/simple-cron:alpine3.10.0
     environment:
       CRONJOB: "* * * * echo 'hey' >> test.txt"
     volumes:
       - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
 ```
-
-One of two things:
+When using this approach you will have to define your own Dockerfile (descripted below) wich extends the base image of your choice.
 
 ### 1 .
 Create a volume with the name of "docker-entrypoint-initcron.d" on your container site
@@ -53,7 +58,7 @@ volumes:
 ```
 
 What you call it on the host site we dont care about.
-But we need to have a file "cronjobs.txt" or files "conjob.txt cronjob.txt etc" where all of your cronjobs are listed.
+But we need to have a file "cronjobs.txt" (or whatever you call it) where all of your cronjobs are listed.
 
 ```
 * * * * echo "example cronjob" >> /cronjob_lob1.txt 2>&1
@@ -83,8 +88,9 @@ volumes:
 ```
 
 ## NOTICE
-Your container needs to have packages installed wich each cronjob needs in order to work.
-Example would be Laravel standart cron:
+Your container needs to have all packages installed, on wich each cronjob depends on in order to work.
+
+Example could be Laravel standard cron:
 
 ```
 environment:

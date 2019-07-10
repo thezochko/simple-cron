@@ -6,3 +6,8 @@ services:
     build:
       context: .
       dockerfile: docker/dockerfiles/cron-alpine-dockerfile
+      args:
+        CRONJOB_ARG: "* * * * My single cronjob test"
+    volumes:
+      - "./docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
+

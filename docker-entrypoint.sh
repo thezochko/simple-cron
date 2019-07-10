@@ -2,18 +2,21 @@
 set -e
 
 # We dont want to use the single cronjob if theres a predefined file with the cronjobs
-cronJobsfileExist=FALSE
+cronJobsfileExist=false
+directory=/docker-entrypoint-initcron.d/
 
-for file in /docker-entrypoint-initcron.d/*; do
-    fileExist=TRUE
-    # Inserting the conjobs from file into the crontab
-    cat "${file}" | crontab -
-done
+if [ -d "${directory}" ]; then
+    for file in ${directory}*; do
+        cronJobsfileExist=TRUE
+        # Inserting the conjobs from file into the crontab
+        cat "${file}" | crontab -
+    done
+fi
 
 # Lets check if the creator wants to use a single cronjob
-if [ ! -z "${CRONJOB}"] || ["${cronJobsfileExist}" = FALSE]; then
+if [ "${cronJobsfileExist}" = false ]; then
     # Inserting the conjob into the crontab
-    cat ${CRONJOB} | crontab -
+    echo "${CRONJOB}" | crontab -
 fi
 
 exec "$@"

@@ -25,9 +25,9 @@ services:
   cron:
     image: thezochko/simple-cron:alpine3.10.0
     environment:
-      CRONJOB: "* * * * echo 'hey' >> test.txt"
+      CRONJOB: "* * * * * echo 'hey' >> /test.txt"
     volumes:
-      - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
+      - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d/"
 ```
 
 Docker-compose.yml EXAMPLE file wich includes all options for setup, where you DO need packages installed to run the cronjobs:
@@ -43,7 +43,7 @@ services:
         context: .
         dockerfile: Dockerfile
     environment:
-      CRONJOB: "* * * * echo 'hey' >> test.txt"
+      CRONJOB: "* * * * * echo 'hey' >> /test.txt"
     volumes:
       - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
 ```
@@ -72,7 +72,7 @@ Then provide enviornment variable:
 
 ```
 environment:
-    CRONJOB: '* * * * echo "example cronjob" >> /cronjob_lob.txt 2>&1'
+    CRONJOB: '* * * * * echo "example cronjob" >> /cronjob_lob.txt 2>&1'
 ```
 
 Now you have cronjob or cronjobs running inside of your container. 
@@ -82,7 +82,7 @@ Now you have cronjob or cronjobs running inside of your container.
 
 ```
 environment:
-      CRONJOB: * * * * php /var/www/cronfile.php >> /dev/null 2>&1
+      CRONJOB: * * * * * php /var/www/cronfile.php >> /dev/null 2>&1
 volumes:
       - "./public_html:/var/www/public_html"
 ```

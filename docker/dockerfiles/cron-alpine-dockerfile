@@ -1,14 +1,8 @@
 FROM alpine:3.10.0
 
-# Filepath for the textfile where the cronjobs are listed
-#ENV CRONJOBS_TEXT_FILE_PATH_ENV=${CRONJOBS_TEXT_FILE_PATH}
-
 # Installing bash so we can use it in the entry file
 RUN apk update && apk add --no-cache \
 bash
-
-#COPY ${CRONJOBS_TEXT_FILE_PATH} cronjobs.txt
-#RUN cat cronjobs.txt | crontab -
 
 # Making entry point available in the container, and making it executable
 COPY docker-entrypoint.sh docker-entrypoint.sh

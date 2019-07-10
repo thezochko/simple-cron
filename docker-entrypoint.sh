@@ -1,15 +1,19 @@
 #!/bin/bash
 set -e
 
-#echo "Entry point script is now working !: ${CRONJOBS_TEXT_FILE_PATH_ENV}"
+# We dont want to use the single cronjob if theres a predefined file with the cronjobs
+cronJobsfileExist=FALSE
 
-echo ${CRONJOBS_TEXT_FILE_PATH_ENV} | crontab -
+for file in /docker-entrypoint-initcron.d/*; do
+    fileExist=TRUE
+    # Inserting the conjobs from file into the crontab
+    cat "${file}" | crontab -
+done
 
-# Lets check if the builder wants to use cronjobs file
-#if [ ! -z "${CRONJOBS_TEXT_FILE_PATH_ENV}"]; then
-    # Inserting the conjobs into the crontab
-    # echo "HEY2" | crontab -
-    #echo "The file path wehere the cronjobs are listed: ${CRONJOBS_TEXT_FILE_PATH_ENV}"
-#fi
+# Lets check if the creator wants to use a single cronjob
+if [ ! -z "${CRONJOB}"] || ["${cronJobsfileExist}" = FALSE]; then
+    # Inserting the conjob into the crontab
+    cat ${CRONJOB} | crontab -
+fi
 
 exec "$@"

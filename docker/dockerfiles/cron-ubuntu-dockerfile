@@ -1,16 +1,15 @@
 FROM ubuntu:18.04
 
-ARG CRON_JOB_DEPENDENCIES
-ARG CRONJOBS_TEXT_FILE_PATH
-
 # Needing bash to navigate inside of the container and executing commands
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 cron \
-nano \
-${CRON_JOB_DEPENDENCIES}
+nano
 
-COPY ${CRONJOBS_TEXT_FILE_PATH} cronjobs.txt
-RUN cat cronjobs.txt | crontab -
+# Making entry point available in the container, and making it executable
+COPY docker-entrypoint.sh docker-entrypoint.sh
+RUN chmod 777 docker-entrypoint.sh
 
 # Starting cron as the entrypoint of this image
-ENTRYPOINT ["/usr/sbin/cron", "-f"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["/usr/sbin/cron", "-f"]

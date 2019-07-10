@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
-echo "Entry point script is now working !"
+#echo "Entry point script is now working !: ${CRONJOBS_TEXT_FILE_PATH_ENV}"
 
-apk add php7
+echo ${CRONJOBS_TEXT_FILE_PATH_ENV} | crontab -
 
-if [ ! -z ${CRON_JOB_DEPENDENCIES_ARG}]; then
-    export ${CRON_JOB_DEPENDENCIES}=${CRON_JOB_DEPENDENCIES_ARG}
-    echo "The package to install is: ${CRON_JOB_DEPENDENCIES}"
-fi
+# Lets check if the builder wants to use cronjobs file
+#if [ ! -z "${CRONJOBS_TEXT_FILE_PATH_ENV}"]; then
+    # Inserting the conjobs into the crontab
+    # echo "HEY2" | crontab -
+    #echo "The file path wehere the cronjobs are listed: ${CRONJOBS_TEXT_FILE_PATH_ENV}"
+#fi
 
 exec "$@"

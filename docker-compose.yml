@@ -6,8 +6,5 @@ services:
     build:
       context: .
       dockerfile: docker/dockerfiles/cron-alpine-dockerfile
-      args:
-        CRON_JOB_DEPENDENCIES_ARG: ${CRON_JOB_DEPENDENCIES}
-        CRONJOBS_TEXT_FILE_PATH_ARG: ${CRONJOBS_TEXT_FILE_PATH}
     volumes:
       - "./:/data/www/"

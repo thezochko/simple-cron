@@ -3,11 +3,44 @@
 [alpine3.10.0](https://github.com/thezochko/simple-cron/tree/master) - 5 MB
 [ubuntu18.04](https://github.com/thezochko/simple-cron/tree/master) - 49 MB
 
-This image is designed to make settinup a cron container alot easier.
+This image is designed to make setting up a cron container alot easier.
 You will have crontab available out of the box.
 And you will be able to implement cronjob/cronjobs in two different ways when using this image.
 
 ## So what you need to do
+
+NOTE that we will be using docker-compose.yml to setup the image for build
+
+Docker-compose.yml EXAMPLE file wich includes all options for setup, where you DONT need any packages installed to run the cronjobs:
+
+```
+version: '3'
+
+services:
+  cron:
+    image: thezochko/simple-cron:alpine3.10.0
+    environment:
+      CRONJOB: "* * * * echo 'hey' >> test.txt"
+    volumes:
+      - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
+```
+
+Docker-compose.yml EXAMPLE file wich includes all options for setup, where you DO need any packages installed to run the cronjobs:
+
+```
+version: '3'
+
+services:
+  cron:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: thezochko/simple-cron:alpine3.10.0
+    environment:
+      CRONJOB: "* * * * echo 'hey' >> test.txt"
+    volumes:
+      - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
+```
 
 One of two things:
 

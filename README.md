@@ -45,16 +45,16 @@ services:
     environment:
       CRONJOB: "* * * * * echo 'hey' >> /test.txt"
     volumes:
-      - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
+      - "./docker/docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d/"
 ```
 When using this approach you will have to define your own Dockerfile (descripted below) wich extends the base image of your choice.
 
 ### 1 .
-Create a volume with the name of "docker-entrypoint-initcron.d" on your container site
+Create a volume with the name of "docker-entrypoint-initcron.d/" on your container site
 
 ```
 volumes:
-      - "./docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d"
+      - "./docker-entrypoint-initcron.d:/docker-entrypoint-initcron.d/"
 ```
 
 What you call it on the host site we dont care about.
@@ -78,11 +78,11 @@ environment:
 Now you have cronjob or cronjobs running inside of your container. 
 
 > Remember that the container needs to have access to the directory where it shuold work. 
-> If you have a website located inside another container you would have to create a volume that both containers have access > to.
+> If you have a website located inside another container you would have to create a volume that both containers have access to.
 
 ```
 environment:
-      CRONJOB: * * * * * php /var/www/cronfile.php >> /dev/null 2>&1
+      CRONJOB: * * * * * php /var/www/public_html/cronfile.php >> /dev/null 2>&1
 volumes:
       - "./public_html:/var/www/public_html"
 ```

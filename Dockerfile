@@ -1,4 +1,4 @@
-FROM alpine:3.10.0
+FROM alpine:3.9
 
 # Installing bash so we can use it in the entry file
 RUN apk update && apk add --no-cache \

@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 
 # Needing bash to navigate inside of the container and executing commands
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -11,5 +11,6 @@ RUN chmod 777 docker-entrypoint.sh
 
 # Starting cron as the entrypoint of this image
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
 
 CMD ["/usr/sbin/cron", "-f"]
